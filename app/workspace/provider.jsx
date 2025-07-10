@@ -1,9 +1,18 @@
-import React from 'react'
+import { SidebarProvider } from "@/components/ui/sidebar";
+import React from "react";
+import AppSidebar from "./_components/AppSidebar";
+import AppHeader from "./_components/AppHeader";
 
-function WorkspaceProvider({children}) {
+function WorkspaceProvider({ children }) {
   return (
-    <div>{children}</div>
-  )
+    <SidebarProvider>
+      <AppSidebar />
+      <div className="w-full">
+        <AppHeader />
+        {children}
+      </div>
+    </SidebarProvider>
+  );
 }
 
-export default WorkspaceProvider
+export default WorkspaceProvider;
