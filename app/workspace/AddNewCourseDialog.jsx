@@ -21,6 +21,7 @@ import { Loader2Icon, Sparkle } from "lucide-react";
 import { Button } from "@/components/ui/button";
 import axios from "axios";
 import { v4 as uuidv4 } from "uuid"; // Import uuid for generating unique IDs
+import { useRouter } from "next/navigation";
 
 function AddNewCourseDialog({ children }) {
   const [loading, setLoading] = useState(false);
@@ -32,6 +33,7 @@ function AddNewCourseDialog({ children }) {
     level: "",
     category: "",
   });
+  const router = useRouter();
 
   const onHandleInputChange = (field, value) => {
     setFormData((prev) => ({
@@ -52,6 +54,7 @@ function AddNewCourseDialog({ children }) {
       });
       console.log(result.data);
       setLoading(false);
+      router.push("/workspace/edit-course/" + result.data?.courseId);
     } catch (e) {
       {
         setLoading(false);
@@ -131,7 +134,11 @@ function AddNewCourseDialog({ children }) {
                 />
               </div>
               <div className="mt-5">
-                <Button className={"w-full"} onClick={onGenerate} disabled={loading}>
+                <Button
+                  className={"w-full"}
+                  onClick={onGenerate}
+                  disabled={loading}
+                >
                   {loading ? (
                     <Loader2Icon className="animate-spin" />
                   ) : (
