@@ -17,10 +17,13 @@ import {
 import { Input } from "@/components/ui/input";
 import { Textarea } from "@/components/ui/textarea";
 import { Switch } from "@/components/ui/switch";
-import { Sparkle } from "lucide-react";
+import { Loader2Icon, Sparkle } from "lucide-react";
 import { Button } from "@/components/ui/button";
+import axios from "axios";
+import { v4 as uuidv4 } from "uuid"; // Import uuid for generating unique IDs
 
 function AddNewCourseDialog({ children }) {
+  const [loading, setLoading] = useState(false);
   const [formData, setFormData] = useState({
     name: "",
     description: "",
@@ -38,8 +41,23 @@ function AddNewCourseDialog({ children }) {
     console.log(formData);
   };
 
-  const onGenerate = () => {
+  const onGenerate = async () => {
     console.log(formData);
+    const courseId = uuidv4(); // Generate a unique course ID
+    try {
+      setLoading(true);
+      const result = await axios.post("/api/generate-course-layout", {
+        ...formData,
+        courseId: courseId, // Assuming courseId is generated in the API
+      });
+      console.log(result.data);
+      setLoading(false);
+    } catch (e) {
+      {
+        setLoading(false);
+        console.log(e);
+      }
+    }
   };
 
   return (
@@ -113,8 +131,13 @@ function AddNewCourseDialog({ children }) {
                 />
               </div>
               <div className="mt-5">
-                <Button className={"w-full"} onClick={onGenerate}>
-                  <Sparkle /> Generate Course
+                <Button className={"w-full"} onClick={onGenerate} disabled={loading}>
+                  {loading ? (
+                    <Loader2Icon className="animate-spin" />
+                  ) : (
+                    <Sparkle />
+                  )}{" "}
+                  Generate Course
                 </Button>
               </div>
             </div>
