@@ -23,6 +23,7 @@ import Image from "next/image";
 import { Button } from "@/components/ui/button";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import AddNewCourseDialog from "../AddNewCourseDialog";
 
 const SideBarOptions = [
   {
@@ -58,8 +59,7 @@ const SideBarOptions = [
 ];
 
 function AppSidebar() {
-
-    const path=usePathname();
+  const path = usePathname();
 
   return (
     <Sidebar>
@@ -68,7 +68,9 @@ function AppSidebar() {
       </SidebarHeader>
       <SidebarContent>
         <SidebarGroup>
-          <Button>Create new Course</Button>
+          <AddNewCourseDialog>
+            <Button>Create new Course</Button>
+          </AddNewCourseDialog>
         </SidebarGroup>
 
         <SidebarGroup>
@@ -76,9 +78,17 @@ function AppSidebar() {
             <SidebarMenu>
               {SideBarOptions.map((item, index) => (
                 <SidebarMenuItem key={index}>
-                  <SidebarMenuButton asChild className={`p-5 hover:bg-gray-300 rounded-md`}>
-                    <Link href={item.link} className={`text-[17px] 
-                        ${path.includes(item.link) && 'text-primary bg-blue-50'}`}>
+                  <SidebarMenuButton
+                    asChild
+                    className={`p-5 hover:bg-gray-300 rounded-md`}
+                  >
+                    <Link
+                      href={item.link}
+                      className={`text-[17px] 
+                        ${
+                          path.includes(item.link) && "text-primary bg-blue-50"
+                        }`}
+                    >
                       <item.icon className="h-7 w-7" />
                       <span>{item.title}</span>
                     </Link>
